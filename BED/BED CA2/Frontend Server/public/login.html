@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <base href="/">
+    <link rel="stylesheet" href="/css/login.css" />
+    <title>Staff Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <ul class="navbar-nav ml-auto" id="nav">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dvd/">DVD search</a></li>
+        </ul>
+      </nav>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+      
+                  <div class="mb-md-5 mt-md-4 pb-5">
+                    <form id="login-form">
+                    <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                    <p class="text-white-50 mb-5">Please enter your login and password!</p>
+      
+                    <div class="form-outline form-white mb-4">
+                      <label class="form-label" for="email">Email</label>
+                      <input type="email" id="email" class="form-control form-control-lg" />
+                    </div>
+      
+                    <div class="form-outline form-white mb-4">
+                      <label class="form-label" for="password">Password</label>
+                      <input type="password" id="password" class="form-control form-control-lg" />
+                    </div>
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        const baseUrl = "http://localhost:8081";
+        $("#login-form").submit((event) => {
+            // prevent page reload
+            event.preventDefault();
+
+            const email = $("#email").val();
+            const password = $("#password").val();
+            const requestBody = {
+                email: email,
+                password: password
+            };
+
+            axios.post(`${baseUrl}/login`, requestBody)
+                .then((response) => {
+                    const token = response.data.token;
+                    const loggedInStaffID = response.data.staff_id;
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("loggedInStaffID", loggedInStaffID);
+                    window.location.href = "/";
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+
+
+    </script>
+</body>
+
+</html>

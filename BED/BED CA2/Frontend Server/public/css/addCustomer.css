@@ -1,0 +1,29 @@
+#logoutbtn{
+    color:#f1f1f1;
+}
+
+form{
+    color:white;
+    background-color: rgba(30,30,30,0.9);
+    padding:70px;
+    padding-bottom:45px;
+    margin-bottom:25px;
+}
+
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+body {
+    background-image: url(/img/addCustomerBackground.jpg);
+    /* https://stock.adobe.com/images/landscape-with-red-wooden-house-in-the-beautiful-japanese-style-garden-park-with-pond-traditional-japan-architecture-exterior-design-outdoor-decor-relax-and-mind-calm-concept-copy-space/234314671, by okrasiuk */
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+

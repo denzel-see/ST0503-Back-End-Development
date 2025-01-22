@@ -1,0 +1,97 @@
+.dvddetails {
+    display: none;
+}
+
+.form-container {
+  display:flex;
+  justify-content: center;
+  width: 65%;
+  max-width: 1000px;
+  margin:0 auto;
+  margin-top:4%;
+  margin-bottom:4%;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  overflow-x: hidden;
+  background: linear-gradient(to bottom right, #ac63ec, #ea97f5);
+  
+}
+
+
+#title {
+  width: 40%;
+  min-width: 200px;
+  max-width: 600px;
+  padding: 0 auto;
+}
+
+#max{
+  width: 40%;
+  min-width: 200px;
+  max-width: 600px;
+  padding: 0 auto;
+}
+
+#logoutbtn{
+  color:#f1f1f1;
+}
+
+body{
+  background: linear-gradient(to right, #0077be, #00b8d4);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #0077be, #00b8d4);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #0077be, #00b8d4);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
+.card {
+  width: 40%;
+  height: 350px;
+  margin: 20px;
+  text-align: center; 
+  overflow: auto;
+  background-color: #efe5d2 !important;
+}
+
+#dvds{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.formcontain{
+  display:flex;
+  justify-content: center; 
+} 
+
+ form {
+  align-self: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.show-details{
+  background-color: #007bff;
+  color:rgb(224, 255, 255);
+  height:40px;
+  border-radius: 15px;
+  border: 1px solid lightcyan;
+}
+
+.add-to-cart{
+  background-color: grey;
+  color:white;
+  height:40px;
+  border-radius: 15px;
+  border: 1px solid lightgray;
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Customers</title>
+    <link rel="stylesheet" href="/css/addCustomer.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <span class="navbar-text" style="color: white;">Denzel's DVD Store</span>
+        <ul class="navbar-nav ml-auto" id="navigation">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/dvd/">DVD search</a></li>
+        </ul>
+    </nav>
+
+    <div style="margin-top: 2rem;">
+        <div class="form-container">
+        <div class="col-md-8 col-xs-12">
+            <form id="addCustomer-form">
+                <h1>Add Customer</h1>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="pt-4 mt-3 mb-1 pb-2">
+                            <label for="store">Store address</label>
+                            <select id="store" required>
+                                <option value="">Choose...</option>
+                                <option value="1">47 MySakila Drive</option>
+                                <option value="2">28 MySQL Boulevard</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="first">First name</label>
+                            <input type="category" class="form-control" id="first" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last">Last name</label>
+                            <input type="category" class="form-control" id="last" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="category" class="form-control" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address1">Address Line 1</label>
+                            <input type="category" class="form-control" id="address1" required>
+                        </div>
+                        <div id="success">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="address2">Address Line 2(optional)</label>
+                            <input type="category" class="form-control" id="address2">
+                        </div>
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <input type="category" class="form-control" id="district" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City ID</label>
+                            <input type="category" class="form-control" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal">Postal code</label>
+                            <input type="category" class="form-control" id="postal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone no.</label>
+                            <input type="category" class="form-control" id="phone" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Customer</button> 
+            </form>
+            
+        </div>
+    </div>
+    
+    
+    </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        const loggedInStaffID = parseInt(localStorage.getItem("loggedInStaffID"));
+
+        if (token != null) {
+            $("#navigation").append(`<li class="nav-item"><a class="nav-link" href="/addActors/">Add Actors</a></li>`)
+            $("#navigation").append(`<button class="nav-link btn btn-primary" id="logoutbtn">Logout</button>`)
+        }
+    </script>
+    <script>
+        $("#logoutbtn").click(() => {
+            localStorage.clear()
+            window.location.href = "/";
+        })
+    </script>
+    <script>
+        // your JS code goes here.
+
+        // API url
+        const baseUrl = "http://localhost:8081";
+
+    
+
+        // put your original code in the script tag here            
+        $("#addCustomer-form").submit((event) => {
+            event.preventDefault()
+            const store_id = $("#store").val();
+            const first_name = $("#first").val();
+            const last_name = $("#last").val();
+            const email = $("#email").val();
+            const address1 = $("#address1").val();
+            const address2 = $("#address2").val();
+            const district = $("#district").val();
+            const cityID = $("#city").val();
+            const postal = $("#postal").val();
+            const phone = $("#phone").val();
+            const requestBody = {
+                store_id: store_id,
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                address_line1: address1,
+                address_line2: address2,
+                district: district,
+                city_id: cityID,
+                postal_code: postal,
+                phone: phone
+            };
+
+            axios.post(`${baseUrl}/customers`, requestBody, { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    $("#success").append(`<p>Customer successfully added!</p>`)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+    </script>
+</body>
+
+</html>

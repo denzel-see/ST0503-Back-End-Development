@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DVD Rental</title>
+    <link rel="stylesheet" href="/css/shoppingCart.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <span class="navbar-text" style="color: white;">Denzel's DVD Store</span>
+        <ul class="navbar-nav ml-auto" id="navigation">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/dvd/">DVD Search</a></li>
+            <li class="nav-item" id="login"><a class="nav-link" href="/login/">Login</a></li>
+        </ul>
+    </nav>
+    <div id="shopping-cart">
+        <h2>Shopping Cart</h2>
+        <button id="clearcart">Clear Cart</button>
+        <div id="total"></div>
+        <div id="checkoutbutton"></div>
+        <ul id="cart-items"></ul>
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        const loggedInStaffID = parseInt(localStorage.getItem("loggedInStaffID"));
+
+        if (token != null) {
+            $("#navigation").append(`<li class="nav-item"><a class="nav-link" href="/addActors/">Add Actors</a></li>`)
+            $("#navigation").append(`<li class="nav-item"><a class="nav-link" href="/addCustomer/">Add Customer</a></li>`)
+            $("#navigation").append(`<button class="nav-link btn btn-primary" id="logoutbtn">Logout</button>`)
+            $('#navigation #login').remove();
+        }
+    </script>
+    <script>
+        $("#logoutbtn").click(() => {
+            localStorage.clear()
+            window.location.href = "/";
+        })
+    </script>
+    <script>
+        const renderCart = () => {
+            const cartItems = document.querySelector('#cart-items');
+            cartItems.innerHTML = '';
+            const title = JSON.parse(localStorage.getItem("title"));
+            const description = JSON.parse(localStorage.getItem("description"));
+            const rentalrate = JSON.parse(localStorage.getItem("rental_rate"));
+
+            for (i = 0; i < title.length; i++) {
+                var textContent = `<li><div class="card" style="margin-top: 2rem;">
+                            <div class="card-body">
+                                <h6>Title:</h6>
+                                <p class="titlecart">${title[i]}</p>
+                                <h6>Description</h6>
+                                <p class="descriptioncart">${description[i]}</p>
+                                <h6>Rental Rate:</h6>
+                                <p class="rental_ratecart">${rentalrate[i]}</p>
+                            </div>
+                            <div class="card-footer text-muted">
+                            </div>
+                        </div>
+                        </li>`;
+                $("#cart-items").append(textContent);
+            }
+            total = 0
+            for (j = 0; j < rentalrate.length; j++) {
+                total += parseFloat(rentalrate[j])
+            }
+            $("#total").append(`<p>Total: $${total}</p>`)
+            $("#checkoutbutton").append(`<button onclick="window.location.href='/checkout/';" id="checkoutbtn" >Checkout</button>`)
+        };
+        
+        renderCart();
+    </script>
+    <script>
+        $("#clearcart").click(() => {
+            localStorage.removeItem("title")
+            localStorage.removeItem("description")
+            localStorage.removeItem("rental_rate")
+            window.location.href = '/cart/'
+        })
+    </script>
+    
+</body>
+
+</html>

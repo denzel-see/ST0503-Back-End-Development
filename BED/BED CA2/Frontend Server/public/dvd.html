@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DVD Rental</title>
+    <link rel="stylesheet" href="/css/dvd.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="bg"></div>
+    <!--Navigation bar-->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <span class="navbar-text" style="color: white;">Denzel's DVD Store</span>
+        <ul class="navbar-nav ml-auto" id="navigation">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/cart/">Shopping Cart</a></li>
+            <li class="nav-item" id="login"><a class="nav-link" href="/login/">Login</a></li>
+        </ul>
+    </nav>
+    <div class="form-container">
+        <div class="formcontain" style="margin-top: 2rem;">
+            <div class="col-md-8 col-xs-12">
+                <h1>DVD Search</h1>
+                <form id="search-form">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="max">Max Rental Rate</label>
+                        <input type="text" class="form-control" id="max">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-select" id="category">
+                            <option value="" disabled selected>Choose...</option>
+                            <option value="Action">Action</option>
+                            <option value="Animation">Animation</option>
+                            <option value="Children">Children</option>
+                            <option value="Classics">Classics</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Documentary">Documentary</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Family">Family</option>
+                            <option value="Foreign">Foreign</option>
+                            <option value="Games">Games</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Music">Music</option>
+                            <option value="New">New</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Travel">Travel</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="dvds">
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        const loggedInStaffID = parseInt(localStorage.getItem("loggedInStaffID"));
+        if (token != null) {
+            $("#navigation").append(`<li class="nav-item"><a class="nav-link" href="/addActors/">Add Actors</a></li>`)
+            $("#navigation").append(`<li class="nav-item"><a class="nav-link" href="/addCustomer/">Add Customer</a></li>`)
+            $("#navigation").append(`<button class="nav-link btn btn-primary" id="logoutbtn" >Logout</button>`)
+            $('#navigation #login').remove();
+        }
+    </script>
+    <script>
+        $("#logoutbtn").click(() => {
+            localStorage.clear()
+            window.location.href = "/";
+        })
+    </script>
+    <script>
+        function showDetail() {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach((card, index) => {
+                const btn = card.querySelector('.show-details');
+                const detailId = 'details' + (index + 1);
+                const detail = document.getElementById(detailId);
+
+                btn.addEventListener('click', function () {
+                    detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        }
+
+    </script>
+    <script>
+        const baseUrl = "http://localhost:8081";
+
+        // put your original code in the script tag here
+        $("#search-form").submit((event) => {
+
+            event.preventDefault();
+            // prevent page reload
+            $("#dvds").empty()
+            i = 0
+            titleD = []
+            const title = $("#title").val();
+            const category = $("#category").val();
+            const max = $("#max").val();
+
+            axios.get(`${baseUrl}/dvd`, {
+                params: {
+                    title: title,
+                    category: category,
+                    max: max
+                }
+            })
+                .then((response) => {
+                    const posts = response.data;
+                    for (j = 0; j < posts.length; j++) {
+                        titleD.push(posts[j].title)
+                        const postHtml = `
+                        <div class="card" style="margin-top: 2rem;">
+                            <div class="card-body">
+                                <h6>Title:</h6>
+                                <p class="titlecart">${posts[j].title}</p>
+                                <h6>Category:</h6>
+                                <p>${posts[j].category}</p>
+                                <h6>Release Year:</h6> 
+                                <p>${posts[j].release_year}</p>
+                                <h6>Description:</h6> 
+                                <p class="descriptioncart">${posts[j].description}</p>
+                                <h6>Rental Rate:</h6>
+                                <p class="rental_ratecart">${posts[j].rental_rate}</p>
+                                <button class="add-to-cart">Add to cart</button>
+                                <button class='show-details'>Show Details</button>
+                                <div class="dvddetails" id="details${j + 1}"></div>
+
+                            </div>
+                            <div class="card-footer text-muted">
+                            </div>
+                        </div>
+                        `
+                        $("#dvds").append(postHtml);
+                    }
+                    async function getData() {
+                        for (x = 0; x < posts.length; x++) {
+                            try {
+                                const responses = await axios.get(`${baseUrl}/dvd/details`, { params: { title: posts[x].title } })
+                                const postse = responses.data;
+                                const detail = `
+                                <p></p>
+                                <div><h6>Rating:</h6> ${postse.rating}</div>
+                                <div><h6>Actors:</h6> ${postse.actors}</div>
+                                `
+                                $(`#details${i + 1}`).append(detail)
+                                i++
+                            } catch (error) {
+                                console.log(error);
+                            };
+
+                        }
+
+                    }
+                    getData()
+                    showDetail()
+                    shoppingcart()
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })
+
+    </script>
+    <script>
+        function shoppingcart() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cartbtn = card.querySelector('.add-to-cart');
+                cartbtn.addEventListener('click', () => {
+                    const titlecart = card.querySelector('.titlecart').textContent;
+                    const descriptioncart = card.querySelector('.descriptioncart').textContent;
+                    const rental_ratecart = card.querySelector('.rental_ratecart').textContent;
+                    let titlekey = localStorage.getItem("title");
+                    if (!titlekey) { titlekey = [] }else{titlekey = JSON.parse(titlekey)}
+                    titlekey.push(titlecart);
+                    localStorage.setItem("title", JSON.stringify(titlekey));
+                    let descriptionkey = localStorage.getItem("description");
+                    if (!descriptionkey) { descriptionkey = []}else{descriptionkey = JSON.parse(descriptionkey);}
+                    descriptionkey.push(descriptioncart);
+                    localStorage.setItem("description", JSON.stringify(descriptionkey));
+                    let rentalratekey = localStorage.getItem("rental_rate");
+                    if (!rentalratekey) { rentalratekey = []}else{rentalratekey = JSON.parse(rentalratekey);}
+                    rentalratekey.push(rental_ratecart);
+                    localStorage.setItem("rental_rate", JSON.stringify(rentalratekey));
+                });
+            });
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+#logoutbtn{
+    color:white;
+}
+
+#shopping-cart{
+  color:white;
+  background-color: rgba(30,30,30,0.9);
+  border-radius:20px;
+  padding:70px;
+  padding-bottom:45px;
+  margin:auto;
+  margin-bottom:40px;
+  width:40%
+}
+
+#cart-items{
+    color:black;
+}
+
+.navbar{
+    margin-bottom:70px;
+}
+
+body{
+    background-color:rgb(237, 227, 117) !important
+}
+
+#checkoutbtn{
+    background-color: #007bff;
+    color:rgb(224, 255, 255);
+    height:35px;
+    border-radius: 8px;
+  }
